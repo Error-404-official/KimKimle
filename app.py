@@ -205,7 +205,7 @@ HTML_TEMPLATE = """
 
         function joinRoom(spec) {
             const n = document.getElementById('in-name').value;
-            const c = document.getElementById('in-room').value.toUpperCase();
+            const c = document.getElementById('in-room').value.toUpperCase().trim();
             if(!n || !c) return;
             if(spec) socket.emit('req_spec', {name: n, room: c});
             else socket.emit('join_room', {name: n, room: c});
@@ -344,29 +344,33 @@ def on_join(d):
     if c in rooms and len(rooms[c]['players']) < 7:
         rooms[c]['players'].append({'n': d['name'], 'id': request.sid})
         join_room(c)
-        emit('room_ready', {'room': code, 'role': 'oyuncu'}) # Not: code -> c olmalı
+        emit('room_ready', {'room': c, 'role': 'oyuncu'})
         update_list(c)
-    else: emit('err', 'Oda dolu veya bulunamadı!')
+    else: 
+        emit('err', 'Oda dolu veya bulunamadı!')
 
 @socketio.on('req_spec')
 def on_req_spec(d):
     c = d['room']
     if c in rooms:
         emit('spec_request', {'name': d['name'], 'sid': request.sid}, room=rooms[c]['host'])
+    else:
+        emit('err', 'İzlenecek oda bulunamadı!')
 
 @socketio.on('acc_spec')
 def on_acc_spec(d):
     c = d['room']
-    if request.sid == rooms[c]['host']:
+    if c in rooms and request.sid == rooms[c]['host']:
         rooms[c]['specs'].append({'n': d['name'], 'id': d['sid']})
         emit('room_ready', {'room': c, 'role': 'izleyici'}, room=d['sid'])
         socketio.server.enter_room(d['sid'], c)
         update_list(c)
 
 def update_list(c):
-    p = [x['n'] for x in rooms[c]['players']]
-    s = [x['n'] for x in rooms[c]['specs']]
-    emit('update_list', (p, s), room=c)
+    if c in rooms:
+        p = [x['n'] for x in rooms[c]['players']]
+        s = [x['n'] for x in rooms[c]['specs']]
+        emit('update_list', (p, s), room=c)
 
 @socketio.on('start_game')
 def on_start(d):
@@ -386,15 +390,18 @@ def send_step(c):
 
 @socketio.on('submit_ans')
 def on_submit(d):
-    c = d['room']; r = rooms[c]
-    r['ans'].append(d['answer'])
-    emit('live_feed', {'q': QUESTIONS[r['step']], 'a': d['answer']}, room=c)
-    r['step'] += 1
-    if r['step'] < 7: send_step(c)
-    else:
-        a = r['ans']
-        story = f"{a[0]}, {a[1]} ile {a[2]}'da, {a[3]} {a[4]}. Bunu gören {a[5]}, '{a[6]}' dedi."
-        emit('finish', {'story': story}, room=c)
+    c = d['room']
+    if c in rooms:
+        r = rooms[c]
+        r['ans'].append(d['answer'])
+        emit('live_feed', {'q': QUESTIONS[r['step']], 'a': d['answer']}, room=c)
+        r['step'] += 1
+        if r['step'] < 7: 
+            send_step(c)
+        else:
+            a = r['ans']
+            story = f"{a[0]}, {a[1]} ile {a[2]}'da, {a[3]} {a[4]}. Bunu gören {a[5]}, '{a[6]}' dedi."
+            emit('finish', {'story': story}, room=c)
 
 @socketio.on('emoji')
 def on_emoji(d):
