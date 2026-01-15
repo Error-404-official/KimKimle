@@ -58,7 +58,7 @@ HTML_TEMPLATE = """
     <style>
         /* TEMALAR */
         :root { --primary: #6366f1; --bg-grad: radial-gradient(circle, rgba(99,102,241,0.15), transparent); }
-
+        
         body.theme-red { --primary: #ef4444; --bg-grad: radial-gradient(circle, rgba(239,68,68,0.2), transparent); }
         body.theme-cyan { --primary: #06b6d4; --bg-grad: radial-gradient(circle, rgba(6,182,212,0.15), transparent); font-family: 'Courier New', monospace; }
         body.theme-purple { --primary: #d946ef; --bg-grad: radial-gradient(circle, rgba(217,70,239,0.2), transparent); }
@@ -77,11 +77,11 @@ HTML_TEMPLATE = """
         .accent-text { color: var(--primary); }
         .accent-bg { background-color: var(--primary); }
         .bg-glow { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 150vw; height: 150vh; background: var(--bg-grad); z-index: -1; pointer-events: none; }
-
+        
         .paper-sheet { background: #fff; color: #1e293b; border-radius: 12px; padding: 1.5rem; transform-origin: bottom center; }
         .paper-fly { animation: flyAway 0.8s forwards ease-in; }
         @keyframes flyAway { to { transform: translateY(-800px) rotate(-10deg); opacity: 0; } }
-
+        
         .no-scrollbar::-webkit-scrollbar { display: none; }
 
         /* Custom Checkbox */
@@ -140,7 +140,7 @@ HTML_TEMPLATE = """
             <div id="host-controls" class="hidden space-y-4">
                 <div class="bg-slate-900/80 p-5 rounded-2xl border border-dashed border-slate-700 space-y-4">
                     <p class="text-[10px] text-slate-400 font-black uppercase tracking-widest text-center">⚙️ HOST AYARLARI</p>
-
+                    
                     <div class="grid grid-cols-2 gap-2">
                         <button onclick="setMode('classic')" id="btn-mode-classic" class="mode-btn p-2 rounded-lg bg-indigo-600/20 text-indigo-300 border border-indigo-600/50 text-xs font-bold">Klasik</button>
                         <button onclick="setMode('parallel')" id="btn-mode-parallel" class="mode-btn p-2 rounded-lg bg-slate-800 text-slate-400 border border-transparent text-xs font-bold">PARALEL 🌌</button>
@@ -159,7 +159,7 @@ HTML_TEMPLATE = """
                 </div>
                 <button onclick="startGame()" class="w-full accent-bg py-4 rounded-xl font-black text-lg shadow-xl shadow-indigo-500/20 hover:scale-[1.02] transition">OYUNU BAŞLAT</button>
             </div>
-
+            
             <div id="guest-waiting" class="hidden text-center py-8">
                 <p class="text-slate-400 text-sm">Host ayarları yapıyor...</p>
                 <div class="mt-4 flex flex-col gap-2 items-center text-xs text-slate-500">
@@ -222,7 +222,7 @@ HTML_TEMPLATE = """
 
             <div class="mt-4 space-y-3 shrink-0">
                 <p class="text-center text-[10px] text-slate-500 uppercase font-bold">Arkadaşlarınla Paylaş</p>
-
+                
                 <div class="grid grid-cols-4 gap-2">
                     <button onclick="shareWhatsapp()" class="bg-[#25D366] p-3 rounded-xl hover:brightness-110 flex items-center justify-center">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24"><path d="M.057 24l1.687-6.163c-1.041-1.804-1.588-3.849-1.587-5.946.003-6.556 5.338-11.891 11.893-11.891 3.181.001 6.167 1.24 8.413 3.488 2.245 2.248 3.481 5.236 3.48 8.414-.003 6.557-5.338 11.892-11.893 11.892-1.99-.001-3.951-.5-5.688-1.448l-6.305 1.654zm6.597-3.807c1.676.995 3.276 1.591 5.392 1.592 5.448 0 9.886-4.434 9.889-9.885.002-5.462-4.415-9.89-9.881-9.892-5.452 0-9.887 4.434-9.889 9.884-.001 2.225.651 3.891 1.746 5.634l-.999 3.648 3.742-.981zm11.387-5.464c-.074-.124-.272-.198-.57-.347-.297-.149-1.758-.868-2.031-.967-.272-.099-.47-.149-.669.149-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.521.151-.172.2-.296.3-.495.099-.198.05-.372-.025-.521-.075-.148-.669-1.611-.916-2.206-.242-.579-.487-.501-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.017-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.095 3.2 5.076 4.487.709.306 1.263.489 1.694.626.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.695.248-1.29.173-1.414z"/></svg>
@@ -260,7 +260,7 @@ HTML_TEMPLATE = """
         const show = id => $(id).classList.remove('hidden');
 
         function setAvatar(c) { myAvatar = c; $('avatar-display').innerText = c; }
-
+        
         function createRoom() {
             const name = $('in-name').value;
             if(!name) return alert("İsim yaz!");
@@ -402,22 +402,22 @@ HTML_TEMPLATE = """
             hide('p-answering'); hide('p-waiting'); show('p-voting');
             const list = $('vote-list');
             list.innerHTML = '';
-
+            
             if(d.is_tie) $('vote-info').innerHTML = "<span class='text-red-500 font-bold'>BERABERLİK! TEKRAR SEÇ!</span>";
             else $('vote-info').innerText = "En iyi cevabı seç!";
 
             d.candidates.forEach(c => {
                 const btn = document.createElement('button');
                 const isMine = c.owner_id === socket.id;
-
+                
                 // İsim gösterme mantığı (Server'dan name verisi gelmişse göster)
                 const authorHTML = c.name ? `<span class="text-[10px] text-slate-400 font-normal">(${c.name})</span>` : '';
-
+                
                 btn.className = `w-full p-4 rounded-xl text-left font-bold text-sm flex justify-between items-center transition 
                     ${isMine ? 'bg-slate-800 text-slate-500 cursor-not-allowed border border-dashed border-slate-600' : 'bg-white/10 hover:bg-white/20 text-white border border-white/10'}`;
-
+                
                 btn.innerHTML = `<div><span>${c.text}</span> ${authorHTML}</div> ${isMine ? '<span class="text-[10px] uppercase tracking-wider">(SEN)</span>' : ''}`;
-
+                
                 if(!isMine) btn.onclick = () => castVote(c.owner_id);
                 list.appendChild(btn);
             });
@@ -432,11 +432,9 @@ HTML_TEMPLATE = """
 </html>
 """
 
-
 @app.route('/')
 def index():
     return render_template_string(HTML_TEMPLATE)
-
 
 # --- SOCKET ---
 
@@ -447,13 +445,12 @@ def create(d):
         'players': [{'id': request.sid, 'name': d['name'], 'avatar': d['avatar']}],
         'answers': [],
         'step': 0,
-        'settings': {'mode': 'classic', 'show_author': False},  # Default Gizli
+        'settings': {'mode': 'classic', 'show_author': False}, # Default Gizli
         'parallel_state': {'phase': 'idle', 'round_answers': {}, 'round_votes': {}, 'candidates': []}
     }
     join_room(code)
     emit('room_created', {'room': code})
     emit('update_list', rooms[code]['players'], room=code)
-
 
 @socketio.on('join_room')
 def join(d):
@@ -463,14 +460,13 @@ def join(d):
         join_room(c)
         emit('room_created', {'room': c})
         emit('update_list', rooms[c]['players'], room=c)
-
+        
         # Mevcut ayarları gönder
         s = rooms[c]['settings']
         emit('settings_changed', {'key': 'mode', 'val': s['mode'], 'config': GAME_MODES[s['mode']]}, room=request.sid)
         emit('settings_changed', {'key': 'show_author', 'val': s['show_author']}, room=request.sid)
     else:
         emit('err', 'Oda yok veya dolu')
-
 
 @socketio.on('update_settings')
 def upd_set(d):
@@ -483,17 +479,13 @@ def upd_set(d):
             payload['config'] = GAME_MODES[d['val']]
         emit('settings_changed', payload, room=c)
 
-
 @socketio.on('start_game')
 def start(d):
     c = d['room']
     mode = rooms[c]['settings']['mode']
     emit('game_start', mode, room=c)
-    if mode == 'parallel':
-        start_parallel_round(c)
-    else:
-        send_classic_turn(c)
-
+    if mode == 'parallel': start_parallel_round(c)
+    else: send_classic_turn(c)
 
 # --- CLASSIC ---
 def send_classic_turn(c):
@@ -502,21 +494,17 @@ def send_classic_turn(c):
     p_idx = r['step'] % len(r['players'])
     p = r['players'][p_idx]
     emit('turn_data', {
-        'step': r['step'], 'q': questions[r['step']],
+        'step': r['step'], 'q': questions[r['step']], 
         'active_id': p['id'], 'active_name': p['name'], 'active_avatar': p['avatar']
     }, room=c)
-
 
 @socketio.on('submit_ans')
 def classic_ans(d):
     c = d['room']
     rooms[c]['answers'].append(d['ans'])
     rooms[c]['step'] += 1
-    if rooms[c]['step'] < 7:
-        send_classic_turn(c)
-    else:
-        finish_game(c)
-
+    if rooms[c]['step'] < 7: send_classic_turn(c)
+    else: finish_game(c)
 
 # --- PARALLEL ---
 def start_parallel_round(c):
@@ -527,7 +515,6 @@ def start_parallel_round(c):
     r['parallel_state']['candidates'] = []
     emit('p_round_start', {'step': r['step'], 'q': GAME_MODES[r['settings']['mode']]['questions'][r['step']]}, room=c)
 
-
 @socketio.on('submit_parallel_ans')
 def p_ans(d):
     c = d['room']
@@ -536,14 +523,13 @@ def p_ans(d):
     if len(r['parallel_state']['round_answers']) >= len(r['players']):
         prepare_voting(c)
 
-
 def prepare_voting(c, tie_candidates=None):
     r = rooms[c]
     r['parallel_state']['phase'] = 'voting'
     r['parallel_state']['round_votes'] = {}
-
+    
     show_names = r['settings'].get('show_author', False)
-
+    
     candidates = []
     if tie_candidates:
         candidates = tie_candidates
@@ -554,17 +540,14 @@ def prepare_voting(c, tie_candidates=None):
             author_name = next((p['name'] for p in r['players'] if p['id'] == pid), "???")
             cand_obj = {'owner_id': pid, 'text': text}
             # Eğer ayar açıksa ismi ekle, yoksa null
-            if show_names:
-                cand_obj['name'] = author_name
-            else:
-                cand_obj['name'] = None
-
+            if show_names: cand_obj['name'] = author_name
+            else: cand_obj['name'] = None
+            
             candidates.append(cand_obj)
-
+            
     r['parallel_state']['candidates'] = candidates
     random.shuffle(candidates)
     emit('p_vote_start', {'candidates': candidates, 'is_tie': (tie_candidates is not None)}, room=c)
-
 
 @socketio.on('cast_vote')
 def p_vote(d):
@@ -574,31 +557,27 @@ def p_vote(d):
     if len(r['parallel_state']['round_votes']) >= len(r['players']):
         calculate_results(c)
 
-
 def calculate_results(c):
     r = rooms[c]
     votes = r['parallel_state']['round_votes']
     candidates = r['parallel_state']['candidates']
-
+    
     tally = {cand['owner_id']: 0 for cand in candidates}
     for target in votes.values():
         if target in tally: tally[target] += 1
-
+            
     max_votes = max(tally.values()) if tally else 0
     winners = [cid for cid, count in tally.items() if count == max_votes]
-
+    
     if len(winners) == 1:
         winner_text = r['parallel_state']['round_answers'][winners[0]]
         r['answers'].append(winner_text)
         r['step'] += 1
-        if r['step'] < 7:
-            start_parallel_round(c)
-        else:
-            finish_game(c)
+        if r['step'] < 7: start_parallel_round(c)
+        else: finish_game(c)
     else:
         tied_cands = [cand for cand in candidates if cand['owner_id'] in winners]
         prepare_voting(c, tie_candidates=tied_cands)
-
 
 def finish_game(c):
     r = rooms[c]
@@ -607,7 +586,6 @@ def finish_game(c):
     if len(ans) < 7: ans += ["..."] * (7 - len(ans))
     story = GAME_MODES[r['settings']['mode']]['story_template'].format(*ans)
     emit('game_over', {'story': story}, room=c)
-
 
 if __name__ == '__main__':
     socketio.run(app, debug=True, port=5000)
